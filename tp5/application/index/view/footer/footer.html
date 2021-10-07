@@ -1,0 +1,53 @@
+<!-- ==================================================
+10.*Footer_area start
+=================================================== -->
+<footer class="romana_footer_area">
+    <div class="romana_footer_top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-3">
+                    <div class="footer_left_text footer_menu footer_border_right">
+                        <div class="footer_logo">
+                            <a href="#"><img src="/web_asset/images/footer_logo.png" alt="logo"></a>
+                        </div>
+                        <p>生活，要有智慧永支撑，人生，要有知识常相伴。</p>
+                    </div>
+                </div>
+                <!-- column End -->
+                <div class="col-sm-3">
+                    <div class="footer_menu footer_border_right footer_padding_left">
+                        <h2>最新公告</h2>
+                        <ul>
+                            {volist name="news_list" id="data"}
+                            <li><a href="{:url('Notice/detail')}?id={$data.id}">{$data.notice_title}</a></li>
+                            {/volist}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- footer_top End -->
+    <div class="romana_footer_bottom">
+        <div class="container">
+            <div class="romana_footer_bottom_content text-center">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <p>Copyright &copy; 2017.Company name All rights reserved.More Templates </p>
+                    </div>
+                    
+                    <!-- column End -->
+                </div>
+                <!-- row End -->
+            </div>
+            <!-- container End -->
+        </div>
+    </div>
+    <!-- footer_bottom End -->
+</footer>
+{include file="footer/footer_js" /}
+
+</body>
+
+</html>

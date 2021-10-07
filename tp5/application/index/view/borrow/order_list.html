@@ -1,0 +1,232 @@
+{extend name="base/base"/}
+
+{block name="contents"}
+<style>
+    .salseActive {
+        background-color: #fff;
+        color: #288feb;
+    }
+
+    .salsenormol a {
+        color: #fff;
+    }
+
+    .left_nav_salse {
+        font-size: 16px;
+    }
+
+    .left_nav_salse ul li:hover a {
+        color: #288feb;
+    }
+    .special_style_lable{
+        padding: 6px 10px;
+    }
+</style>
+<div class="container book_body_contanier" id="book_body_contanierVue" style="padding-top: 100px;">
+    <div class="row ">
+        <div class="col-sm-3">
+            <div class="left_nav_salse">
+                <h4>个人中心</h4>
+                <ul>
+                    <li class="salsenormol">
+                        <a href="{:url('Index/preson_edit')}">修改个人信息</a>
+                    </li>
+                    <li class="salseActive">
+                        <a href="{:url('Borrow/order_list')}">订单管理</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="panel panel-info">
+                <div class="panel-heading">订单列表</div>
+                <div class="panel-body">
+                    <div style=" display: flex;">
+                        <div class="form-group" style="display: flex;align-items: center;">
+                            <label for="inputEmail3" class="col-form-label">手机号：</label>
+                            <div class="">
+                                <input type="tel" class="form-control item_brrow_input"
+                                    onkeyup="this.value=this.value.replace(/[^\d]/g,'')" v-model="order_id"
+                                    name="order_connect_phone" placeholder="请输入订单号" required>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex;align-items: center;margin-left: 20px;">
+                            <label for="inputEmail3" class=" col-form-label">起始时间：</label>
+                            <div class="">
+                                <input type="date" class="form-control item_brrow_input" v-model="create_time"
+                                    name="create_time" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-8">
+                                <button @click="getSale" style="background-color: #288feb;"
+                                    class="btn btn-success">搜索订单</button>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 10px;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>订单号</th>
+                                <th>书名</th>
+                                <th>下单日期</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in order_list" :key="item.order_id">
+                                <td>{{item.order_id}}</td>
+                                <td>{{item.book_name}}</td>
+                                <td>{{item.create_time}}</td>
+                                <td>
+                                    <span class="label label-primary special_style_lable" v-if="item.order_status==0">已下单</span>
+                                    <span class="label label-primary special_style_lable" v-if="item.order_status==1">未发书</span>
+                                    <span class="label label-primary special_style_lable" v-if="item.order_status==2">已发送</span>
+                                    <span class="label label-primary special_style_lable" v-if="item.order_status==3">已签收</span>
+                                    <span class="label label-primary special_style_lable" v-if="item.order_status==4">已归还</span>
+                                    <span class="label label-primary special_style_lable" v-if="item.order_status==5">已逾期</span>
+                                    <span class="label label-primary special_style_lable" v-if="item.order_status==6">已取消</span>
+                                </td>
+                                <td>
+                                    <div style="display: flex;">
+                                        <a class="btn btn-success" 
+                                        :href="'{:url('Borrow/order_detail')}?order_id='+item.order_id"
+                                        style="background-color: #288feb;margin-right: 10px;">查看详情</a>
+
+                                        <button class="btn btn-success" 
+                                        v-if="item.order_status==2"
+                                        @click="acceptBook(item.order_id)"
+                                        style="background-color: #288feb;margin-right: 10px;">收书</button>
+
+                                        <button class="btn btn-success" 
+                                        v-if="item.order_status==3"
+                                        @click="giveBack(item.order_id)"
+                                        style="background-color: #288feb;margin-right: 10px;">归还</button>
+
+                                        <button class="btn btn-danger" 
+                                        v-if="item.order_status<2"
+                                        @click="canelOrder(item.order_id)"
+                                        >取消</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/web_asset/js/vue.js"></script>
+<script src="/web_asset/js/jquery-3.1.0.min.js"></script>
+
+<script>
+    let vm = new Vue({
+        el: '#book_body_contanierVue',
+        data: {
+            order_id: '',
+            create_time: '',
+            order_list:[]
+        },
+        created() {
+            this.getOrderList()
+        },
+        methods: {
+            getOrderList() {
+                if(this.create_time){
+                    this.create_time = Date.parse(this.create_time) / 1000
+                }
+                var data = {
+                    order_id:this.order_id,
+                    create_time:this.create_time
+                }
+                var that = this;
+                $.ajax({
+                    url: "order_query_list",
+                    type: "post",
+                    data: data,
+                    success: function (res) {
+                        if (res.code == 200) {
+                            that.order_list = res.data
+                        }
+                    }
+                })
+            },
+            getSale(){
+                this.getOrderList()
+            },
+            acceptBook(order_id){
+                layer.confirm('请确认书籍是否收到', {
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url: "acceptBooks",
+                        type: "post",
+                        data: {
+                            order_id:order_id,
+                            order_status:3
+                        },
+                        success: function (res) {
+                            if(res.code == 200){
+                                location.reload();
+                            }
+                            
+                        }
+                    })
+                }, function(){
+
+                });
+            },
+            giveBack(order_id){
+                layer.confirm('请确认是否归还书籍？', {
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url: "giveBackBooks",
+                        type: "post",
+                        data: {
+                            order_id:order_id,
+                            order_status:4
+                        },
+                        success: function (res) {
+                            if(res.code == 200){
+                                location.reload();
+                            }
+                            
+                        }
+                    })
+                }, function(){
+
+                });
+            },
+            canelOrder(order_id){
+                layer.confirm('请确认是否取消订单？', {
+                    btn: ['确认','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        url: "canelOrders",
+                        type: "post",
+                        data: {
+                            order_id:order_id,
+                            order_status:6
+                        },
+                        success: function (res) {
+                            if(res.code == 200){
+                                location.reload();
+                            }
+                            
+                        }
+                    })
+                }, function(){
+
+                });
+            }
+        }
+    })
+</script>
+{/block}

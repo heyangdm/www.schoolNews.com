@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>注册</title>
+    {include file="header/header_link" /}
+
+</head>
+<body>
+    <style>
+      body{
+        background-color: #f3f5f8 !important;
+      }
+      .register_box{
+          width:400px;
+          margin: 0 auto;
+          margin-top: 10%;
+          border-radius: 10px;
+          padding: 50px 20px;
+          background-color: #fff;
+      }
+
+  </style>
+          <div class="romana_header_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-xs-6">
+                        <div class="romana_header_top_left">
+                            <span style="color: #fff;">学生借阅平台</span>
+                            <a href="#" class="hidden-xs"><i class="icofont icofont-phone"></i>+22 666-888-999</a>
+                        </div>
+                    </div>
+                    <!-- column End -->
+                    <!-- column End -->
+                    <div class="col-md-2 col-xs-6 col-md-offset-7">
+                        <div class="romana_header_top_right hidden-xs">
+                            <ul>
+                                <li><a href="#"><i class="icofont icofont-social-pinterest"></i></a></li>
+                                <li><a href="#"><i class="icofont icofont-social-google-plus"></i></a></li>
+                                <li><a href="#"><i class="icofont icofont-social-twitter"></i></a></li>
+                                <li><a href="#"><i class="icofont icofont-social-skype"></i></a></li>
+                                <li><a href="#"><i class="icofont icofont-social-facebook"></i></a></li>
+                            </ul>
+                        </div>
+                        <div class="romana_client_btn  romana_client_btn_small hidden-sm hidden-md hidden-lg">
+                            <a href="#"><i class="icofont icofont-user-alt-3"></i>登录</a>
+                            <div class="romana_client_log_in">
+                                <form action="#" class="romana_client_log_in_after">
+                                    <input type="text" name="clientEmail" placeholder="Email here">
+                                    <input type="text" name="clientPass" placeholder="password">
+                                    <input type="submit" value="Login">
+                                    <p> or <a href="registration.html">registration</a></p>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- column End -->
+                </div>
+                <!-- row End -->
+            </div>
+            <!-- container End -->
+        </div>
+    <form class="register_box" action="sunbmit_register" method="POST">
+        <div class="form-group row">
+          <label for="inputEmail3" class="col-sm-3 col-form-label">用户名</label>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="username" placeholder="" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword3" class="col-sm-3 col-form-label">密码</label>
+          <div class="col-sm-9">
+            <input type="password" class="form-control" name="password1" required>
+          </div>
+        </div>
+        <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-3 col-form-label">确认密码</label>
+            <div class="col-sm-9">
+              <input type="password" class="form-control" name="password2" required>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="inputPassword3" class="col-sm-3 col-form-label">注册码</label>
+            <div class="col-sm-9">
+              <input type="number" class="form-control" name="register_No" required>
+            </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-10 offset-sm-2">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="gridCheck1" required>
+              <label class="form-check-label" for="gridCheck1">
+                 <span id="get_agreement">同意注册协议</span> 
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-sm-12">
+            <button  type="submit" style="background-color: #288feb;" class="btn btn-success col-sm-12">注册</button>
+          </div>
+        </div>
+      </form>
+</body>
+{include file="footer/footer_js" /}
+<script>
+$("#get_agreement").click(function(){
+  layer.open({
+    type: 1,
+    area: ['500px', '700px'], //宽高
+    content: '<div style="padding:10px">{$agreement["content"]}</div>'
+  });
+})
+
+
+</script>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="/assets/css/view.css"/>
+    <link rel="icon" href="favicon.ico">
+    <title>管理后台</title>
+    <style>
+        .login-form{
+            width: 420px;
+        }
+    </style>
+</head>
+<body class="login-wrap">
+    <div class="login-container">
+        <form class="login-form layui-form layui-card-body" action="/admin/index/login" method="POST">
+            <h3 style="text-align: center;margin-bottom: 20px;">登录</h3>
+            <div class="input-group">
+                <label for="username">
+                    <span class="label-title">用户名</span>
+                </label>
+                <input type="text" id="username" name="username" class="input-field" style="border-bottom: 1px solid #eee;">
+            </div>
+            <div class="input-group">
+                <label for="username">
+                    <span class="label-title">选择身份</span>
+                </label>
+                <div class="layui-input-block" style="margin-left: 0;margin-top: 15px;; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                  <input type="radio" name="identity" value="0" title="超级管理员" checked>
+                  <input type="radio" name="identity" value="1" title="管理员" >
+                  <input type="radio" name="identity" value="2" title="教师" >
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="password">
+                    <span class="label-title">密码</span>
+                </label>
+                <input type="password" id="password" name="password" class="input-field" style="border-bottom: 1px solid #eee;">
+            </div>
+            <button type="submit" class="login-button">登录<i class="ai ai-enter"></i></button>
+            <!-- <a href="{:url('Index/register')}" style="text-align: center;margin: 10px 0;display: block;">注册</a> -->
+        </form>
+        
+    </div>
+</body>
+<script src="/assets/layui.js"></script>
+<!-- <script src="/js/index.js" data-main="login"></script> -->
+<script src="/assets/layui.all.js"></script>
+<script>
+  var form = layui.form
+    ,layer = layui.layer;
+</script>
+</html>

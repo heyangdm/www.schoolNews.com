@@ -1,0 +1,105 @@
+{extend name="base/base"/}
+ 
+{block name="contents"}
+<style>
+.salseActive{
+    background-color: #fff;
+    color: #288feb;
+}
+</style>
+<div class="container book_body_contanier" id="book_body_contanierVue" style="padding-top: 100px;">
+    <div class="row ">
+        <div class="col-sm-3">
+            <div class="left_nav_salse">
+                <h4>书籍分类</h4>
+                <ul>
+                    <li v-for="(item,index) in saleList" :class="curentIndex == index?'salseActive':''"
+                     :key="item.id" @click="changeSalse(item.id,index)">{{item.salse_name}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-4 book_item_container" v-for="item in bookList" :key="item.id">
+                    <div>
+                        <a :href="'{:url('Book/detail')}?bookid='+item.bookid"><img :src="item.book_banner" alt=""></a> 
+                    </div>
+                    <div class="book_item_content">
+                        <div><a :href="'{:url('Book/detail')}?bookid='+item.bookid" style="font-weight: bold;color: #333;">{{item.book_name}}</a></div>
+                        <div style="font-size: 14px;">{{item.author}}</div>
+                        <div style="font-size: 12px;color: #666;">{{item.book_sale}}</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/web_asset/js/vue.js"></script>
+<script src="/web_asset/js/jquery-3.1.0.min.js"></script>
+<script>
+/*
+    明天前后端分离
+*/
+let vm = new Vue({
+    el:'#book_body_contanierVue',
+    data:{
+        salseId:0,
+        saleList:[],
+        bookList:[],
+        curentIndex:0
+    },
+    created(){
+        this.getSale()
+        this.getbookList(this.salseId)
+    },
+    methods:{
+        getSale(){
+            var data = {}
+            var that = this;
+            $.ajax({
+            url:"query_book_salse",
+            type:"post",
+            data:data,
+            success:function(res){
+                if(res.code == 200){
+                    let initdata = {
+                        id:0,
+                        salse_name:"全部"
+                    } 
+                    var list = res.data.unshift(initdata)
+                    that.saleList = res.data
+                }
+            }
+            })
+        },
+        getbookList(id){
+            var data = {
+                id:id
+            }
+            var that = this;
+            $.ajax({
+            url:"query_book",
+            type:"post",
+            data:data,
+            success:function(res){
+                if(res.code == 200){
+                    if(res.data.length<1){
+                        layer.msg('此分类暂无书籍', {icon: 2});
+                        return
+                    }
+                    that.bookList = res.data
+                }
+            }
+            })
+        },
+        changeSalse(id,index){
+            this.salseId = id
+            this.curentIndex = index
+            this.getbookList(this.salseId)
+        },
+    }
+})
+
+</script>
+{/block}

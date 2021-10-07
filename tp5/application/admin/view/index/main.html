@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+</head>
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header custom-header">
+            
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item slide-sidebar" lay-unselect>
+                    <a href="javascript:;" class="icon-font"><i class="ai ai-menufold"></i></a>
+                </li>
+            </ul>
+
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" id="showTips" onclick="showNews()">最新消息</a>
+                </li>
+                <li class="layui-nav-item">
+                    <div style="display: flex;align-items: center;">
+                        <a href="javascript:;">{$result['username']}</a>
+                        <img src="{$result['user_photo']}" alt="" width="30" height="30" style="border-radius: 30px;">
+                    </div>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="feedback()">帮助中心</a></dd>
+                        <dd><a href="{:url('Index/login_out')}">退出</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-side custom-admin">
+            <div class="layui-side-scroll">
+
+                <div class="custom-logo">
+                    <img src="/assets/images/logo.png" alt=""/>
+                    <h1>Admin Pro</h1>
+                </div>
+                <ul id="Nav" class="layui-nav layui-nav-tree">
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe609;</i>
+                            <em>主页</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('Index/console')}">控制台</a></dd>
+                            {if condition="($result['identity'] == 1 ) "}
+                            <dd><a href="{:url('Agreement/index')}">系统协议</a></dd>
+                            {/if}
+                        </dl>
+                    </li>
+                    {if condition="($result['identity'] >= 1 ) "}
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe655;</i>
+                            <em>订单列表</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('Order/index')}">订单列表</a></dd>
+                        </dl>
+                    </li>
+                    {/if}
+                    {if condition="($result['identity'] < 2 ) "} 
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe857;</i>
+                            <em>公告列表</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('News/index')}">公告列表</a></dd>
+                            <dd><a href="{:url('News/recycle')}">公告回收</a></dd>
+                            <!-- <dd>
+                                <a href="javascript:;">页面</a>
+                                <dl class="layui-nav-child">
+                                    <dd>
+                                        <a href="index.html">登录页</a>
+                                    </dd>
+                                </dl>
+                            </dd> -->
+                        </dl>
+                    </li>
+                    {/if}
+                    {if condition="($result['identity'] >= 1 ) "} 
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe656;</i>
+                            <em>书籍管理</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('Book/index')}">书籍列表</a></dd>
+                            {if condition="($result['identity'] == 1 ) "} 
+                            <dd><a href="{:url('Book/sale')}">书籍分类</a></dd>
+                            {/if}
+                            <dd><a href="{:url('Book/recyle')}">书籍回收</a></dd>
+                        </dl>
+                    </li>
+                    {/if}
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe612;</i>
+                            <em>用户</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('User/index')}">用户组</a></dd>
+                            <dd><a href="{:url('User/operaterule')}">用户恢复</a></dd>
+                            {if condition="($result['identity'] == 2 ) "} 
+                            <dd><a href="{:url('User/register_no')}">注册码</a></dd>
+                            {/if}
+                        </dl>
+                    </li>
+
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe770;</i>
+                            <em>个人中心</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('Personal/index')}">个人中心</a></dd>
+                            {if condition="($result['identity'] == 1 ) "}
+                            <dd><a href="{:url('Schoolmsg/index')}">学校信息</a></dd>
+                            {/if}
+                        </dl>
+                    </li>
+                    {if condition="($result['identity'] < 1 ) "}
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe645;</i>
+                            <em>消息推送</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('Message/index')}">消息列表</a></dd>
+                            <dd><a href="{:url('Message/recycle')}">消息回收</a></dd>
+                        </dl>
+                    </li>
+                     
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe6b2;</i>
+                            <em>反馈消息</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('Feedback/index')}">反馈消息</a></dd>
+                        </dl>
+                    </li>
+                    {/if}
+                    {if condition="($result['identity'] > 0 && $result['identity'] < 3 ) "}
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">
+                            <i class="layui-icon">&#xe6b2;</i>
+                            <em>反馈消息</em>
+                        </a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="{:url('Schoolfeekmsg/index')}">反馈消息</a></dd>
+                        </dl>
+                    </li>
+                    {/if}
+                </ul>
+
+            </div>
+        </div>
+
+        <div class="layui-body">
+             <div class="layui-tab app-container" lay-allowClose="true" lay-filter="tabs">
+                <ul id="appTabs" class="layui-tab-title custom-tab"></ul>
+                <div id="appTabPage" class="layui-tab-content"></div>
+            </div>
+        </div>
+
+        <div class="layui-footer">
+            <p>© 校园新闻网：<a href="" target="_blank">校园新闻</a></p>
+        </div>
+
+        <div class="mobile-mask"></div>
+    </div>
+    <script src="/assets/layui.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/common.js"></script>
+    <!-- <script src="/js/index.js" data-main="home"></script> -->
+    <script src="/js/home.js"></script>
+    <script>
+        function showNews(){
+            var content = '<div style="text-align:center;margin:40px 0;">{$new_msg}</div>';
+            layer.open({
+            type: 1,
+            area: ['520px', ''], //宽高
+            shade:0,
+            content:content
+            });
+        }
+        function feedback(){
+            var content =`<div class="layui-form" style="padding:20px 30px;">
+                            <h3 style="text-align:center">反馈意见</h3>
+                            <div class="layui-form-item" style="margin-top:20px">
+                                <label class="layui-form-label">联系方式</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="conect_phone" required lay-verify="required" id="conect_phone" placeholder="请输入联系方式" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">反馈意见</label>
+                                <div class="layui-input-block">
+                                    <textarea name="feedback_msg" placeholder="请输入内容" class="layui-textarea" id="feedback_msg"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn" id="submitData" onclick="submitData()">立即提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>`
+            layer.open({
+            type: 1,
+            area: ['520px', '360px'], //宽高
+            shade:0,
+            content:content,
+            yes: function(){
+                
+            }
+            });
+        }
+        function submitData(){
+           let conect_phone = $("#conect_phone").val();
+           let feedback_msg = $("#feedback_msg").val();
+           let options = {conect_phone,feedback_msg};
+           let url = "/admin/index/feedback";
+            ajaxPost(url,options,function(res){
+                if(res.code == 200){
+                    layer.msg(res.msg, {icon: 1,time: 2000},function(){
+                        layer.closeAll();
+                        window.location = "/admin/Index/main";
+                    });
+
+                }else{
+                    layer.alert(res.msg)
+                }
+            });
+        }
+
+        
+
+    </script>
+</body>
+</html>

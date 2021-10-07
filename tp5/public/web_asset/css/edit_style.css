@@ -1,0 +1,13 @@
+.top_banner img{
+    width: 100% !important;
+    height: 800px;
+}
+.hero_slider_bg{
+    height: 800px;
+}
+.owl-prev,.owl-next{
+    padding-top: -10px;
+}
+.icofont{
+    margin-top: -10px;
+}

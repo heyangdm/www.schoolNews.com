@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/view.css"/>
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">用户</a>
+                  <a><cite>添加用户</cite></a>
+                </span>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                  <form class="layui-form">
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">账号</label>
+                      <div class="layui-input-inline">
+                        <input type="text" name="username" required lay-verify="required" placeholder="请输入账号" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">请输入电话或者邮箱</div>
+                    </div>
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">用户身份</label>
+                      <div class="layui-input-inline">
+                        <select name="identity" required lay-verify="required" lay-filter="identity">
+                          {if condition="($result['identity'] == 0 ) "} 
+                          <option value="1">管理员</option>
+                          <option value="2">教师</option>
+                          <option value="3">学生</option>
+                          {/if}
+                          {if condition="($result['identity'] == 1 ) "} 
+                          <option value="2">教师</option>
+                          <option value="3">学生</option>
+                          {/if}
+                          {if condition="($result['identity'] == 2 ) "} 
+                          <option value="3">学生</option>
+                          {/if}
+                        </select>
+                      </div>
+                    </div>
+                    {if condition="($result['identity'] == 0 ) "}
+                    <div class="layui-form-item layui-col-xs8">
+                      <div class="layui-inline" id="handle_show_admin" style="display: none;">
+                        <label class="layui-form-label">归属管理员</label>
+                        <div class="layui-input-inline">
+                          <select name="conect_admin" required lay-verify="required" lay-search="" lay-filter="handle_sid">
+                            <!-- <option value="">直接选择或搜索选择</option> -->
+                            {volist name="user_admin_List" id="vo"}
+                            <option value="{$vo.uid}">{$vo.username}</option>
+                            {/volist}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="layui-inline" id="handle_show_teacher" style="display: none;">
+                        <label class="layui-form-label">归属教师</label>
+                        <div class="layui-input-inline">
+                          <select name="conect_teacher" id="handle_teacher" lay-search="" lay-filter="handle_teacher">
+                            <option value="">直接选择或搜索选择</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    {/if}
+
+                    {if condition="($result['identity'] == 1 ) "}
+                    <div class="layui-form-item layui-col-xs8" style="display: none;" id="is_show_teachers">
+                      <label class="layui-form-label">归属教师</label>
+                      <div class="layui-inline">
+                        <div class="layui-input-inline">
+                          <select name="conect_teacher" lay-search="" lay-filter="conect_teacher">
+                            <option value="">直接选择或搜索选择</option>
+                              {volist name="user_teacher_List" id="vo"}
+                              <option value="{$vo.uid}">{$vo.username}</option>
+                              {/volist}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    {/if}
+
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">密码框1</label>
+                      <div class="layui-input-inline">
+                        <input type="password" name="password1" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                    </div>
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">密码框2</label>
+                      <div class="layui-input-inline">
+                        <input type="password" name="password2" required lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                    </div>
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">邮箱</label>
+                      <div class="layui-input-inline">
+                        <input type="email" name="email"  placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                    </div>
+
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">城市</label>
+                      <div class="layui-input-inline">
+                        <input type="text" name="city" placeholder="请输入所在城市" autocomplete="off" class="layui-input">
+                      </div>
+                      <!-- <div class="layui-form-mid layui-word-aux">辅助文字</div> -->
+                    </div>
+
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">性别</label>
+                      <div class="layui-input-block">
+                        <input type="radio" name="sex" value="男" title="男">
+                        <input type="radio" name="sex" value="女" title="女" checked>
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">头像</label>
+                      <div class="layui-input-block">
+                        <div class="layui-upload">
+                            <input type="hidden" name="user_photo" id="banner" value="">
+                            <button type="button" class="layui-btn" id="test1">上传图片</button>
+                            <div class="layui-upload-list">
+                              <img class="layui-upload-img" id="demo1" style="width: 95px;" src="">
+                              <p id="demoText"></p>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text layui-col-xs6">
+                      <label class="layui-form-label">签名</label>
+                      <div class="layui-input-block">
+                        <textarea name="sign" placeholder="请输入内容" class="layui-textarea"></textarea>
+                      </div>
+                    </div>
+                    <input type="hidden" name="is_del" value="0">
+                    <div class="layui-form-item">
+                      <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/layui.all.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/layuiMethods.js"></script>
+    <script src="/js/common.js"></script>
+    
+    <script>
+      layui.use(['form','upload'], function(){
+        var form = layui.form;
+        var upload = layui.upload
+
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/admin/Personal/upload' //上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+                layer.msg('上传中', {icon: 16, time: 0});
+            }
+            ,done: function(res){
+            console.log(res)
+                $("#banner").val(res.data.src);
+                if(res.code==0){
+                    return layer.msg('图片上传成功');
+                }else{
+                    return layer.msg('图片上传失败，请刷新后重试');
+                }
+            }
+            ,error: function(){
+            //请求异常回调
+            }
+        });
+
+        form.on('select(identity)', function(data){
+            var identityType = data.value;
+            if(identityType == 3){
+              $("#handle_show_admin").show();
+              $("#handle_show_teacher").show();
+              $("#is_show_teachers").show();
+            }else if(identityType == 2){
+              $("#is_show_teachers").hide();
+              $("#handle_show_admin").show();
+              $("#handle_show_teacher").hide();
+            }else{
+              $("#handle_show_admin").hide();
+              $("#handle_show_teacher").hide();
+
+            }
+        })
+
+        form.on('select(handle_sid)', function(data){
+            // console.log(data.value)
+            let uid = data.value;
+            let options ={uid:uid}
+            let url = "/admin/User/get_teacher";
+            ajaxPost(url,options,function(res){
+              // console.log(res.data)
+              var str = "";
+              $.each(res.data, function (index, item) {
+                str += `
+                  <option value='${item.uid}'>${item.username}</option>
+                `
+              });
+              $('#handle_teacher').html(str);
+              layui.form.render("select");
+            });
+        })
+
+        form.on('select(handle_teacher)', function(data){
+            // console.log(data)
+        })
+        
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+          let options =data.field
+          console.log(options)
+          if(options.identity == 1){
+              options.conect_admin = 0
+              options.conect_teacher = 0
+          }
+          if(options.identity == 2){
+              options.conect_teacher = 0
+          }
+          // return;
+          $.ajax({
+            url:"/admin/User/add_new_user",
+            data:options,
+            type:"post",
+            headers : {'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8'}, 
+            success:function(res){
+              if(res.code == 200){
+                ajaxSucess(res.msg)
+                setTimeout(()=>{
+                    window.location.href="javascript:history.go(-1)";
+                },2000)
+              }else{
+                ajaxFail(res.msg)
+              }
+            }
+          })
+
+          return false;
+        });
+      });
+
+        
+    </script>
+</body>
+</html>

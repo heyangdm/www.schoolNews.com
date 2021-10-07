@@ -1,0 +1,90 @@
+{extend name="base/base"/}
+ 
+{block name="contents"}
+<!-- ==========================================================
+2.*Hero_area start
+============================================================ -->
+    <div class="romana_allPage_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="romana_allPage_text text-center">
+                        <h1>About SCHOOL</h1>
+                        <ol class="breadcrumb hvr-shutter-out-horizontal">
+                            <li><a href="{:url('Index/index')}">Home</a><span></span></li>
+                            <li><a href="#">about</a></li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- column End -->
+            </div>
+            <!-- row End -->
+        </div>
+        <!-- container End -->
+    </div>
+<!-- ==========================================================
+3.*romana_awesome_service_area start
+============================================================ -->
+    <div class="romana_welcome_webhost_area romana_section_padding">
+        <div class="container">
+            <div class="row ">
+                <div class="col-sm-6">
+                    <div class="romana_welcome_img">
+                        <a href="#"><img src="/web_asset/images/welcome_img.jpg" alt=""></a>
+                    </div>
+                </div>
+                <!-- column End -->
+                <div class="col-sm-6">
+                    <div class="romana_welcome_text">
+                        <h2>欢迎来到我们的学校</h2>
+                        <p class="romana_margin_bottom30" style="font-weight: bold;">{$school_info['adress']}</p>
+                        <p>{$school_info['school_info']}</p>
+                    </div>
+                </div>
+                <!-- column End -->
+            </div>
+            <!-- row End -->
+        </div>
+        <!-- container End -->
+    </div>
+    <!-- ==========================================================
+8.*Client_area start
+============================================================ -->
+<div class="romana_client_area romana_section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="romana_section_title text-center">
+                    <h2>我们的图书管理教师</h2>
+                    <p>面对流逝着的时间的人，很容易失去生活的勇气，但是只要心里相信些什么，勇气就绝对不会消失!</p>
+                </div>
+            </div>
+            <!-- column End -->
+        </div>
+        <!-- row End -->
+        <div class="row ">
+            <div class="col-xs-12">
+                <div class="romana_client_crsl">
+                    {volist name="teacher_list" id="data"}
+                    <div class="romana_single_client_text_img text-center">
+                        <div class="romana_client_img">
+                            <img src="{$data.user_photo|default='/web_asset/images/default_head.jpg'}" alt="" height="80">
+                        </div>
+                        <div class="romana_single_client_text">
+                            <p>{$data.sign|default="暂无签名"}</p>
+                            <div class="romana_client_title">
+                                <h3>{$data.username}</h3>
+                                <p>教师</p>
+                            </div>
+                        </div>
+                    </div>
+                    {/volist}
+                </div>
+            </div>
+            <!-- column End -->
+            <!-- row End -->
+        </div>
+        <!-- container End -->
+    </div>
+</div>
+{/block}

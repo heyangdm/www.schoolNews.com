@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- Title -->
+    <title>Home</title>
+    <!-- ================================================================
+        ***Favicon***
+    ================================================================= -->
+    <link rel="shortcut icon" type="image/png" href="images/fevicon.png">
+
+    {include file="header/header_link" /}
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="home">
+
+    <div id="preloader">
+        <div class="preloader_spinner"></div>
+    </div>
+    <!-- preloader end -->
+    <!-- ==========================================================
+    1.*Header_area start
+============================================================ -->
+    <header class="myweb_header">
+        <div class="romana_header_top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-5 col-xs-6">
+                        <div class="romana_header_top_left">
+                            <span style="color: #fff;">{$school_info['school_name']}借阅平台</span>
+                            <a href="#" class="hidden-xs"><i class="icofont icofont-phone"></i>+{$school_info['school_tel']}</a>
+                        </div>
+                    </div>
+                    <!-- column End -->
+                    <!-- column End -->
+                    <div class="col-md-2 col-xs-6 col-md-offset-5">
+                        <div class="romana_header_top_right hidden-xs">
+                            <ul>
+                                <li><a href="#"><i class="icofont icofont-social-pinterest"></i></a></li>
+                                <li><a href="#"><i class="icofont icofont-social-google-plus"></i></a></li>
+                                <li><a href="#"><i class="icofont icofont-social-twitter"></i></a></li>
+                                <li><a href="#"><i class="icofont icofont-social-skype"></i></a></li>
+                                <li><a href="#"><i class="icofont icofont-social-facebook"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- column End -->
+                </div>
+                <!-- row End -->
+            </div>
+            <!-- container End -->
+        </div>
+        <!-- Header-Top End -->
+        <div class="romana_header_bottom" style="background-color: #fff;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-2 col-xs-6">
+                        <div class="romana_logo">
+                            <a href="index.html"><img src="{$school_info['school_logo']}" alt="" height="60"></a>
+                        </div>
+                    </div>
+                    <!-- column End -->
+                    <div class="col-sm-8">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                                data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only"></span>
+                                <i class="icofont icofont-navigation-menu"></i>
+                            </button>
+                        </div>
+                        <nav id="navbar" class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li><a href="{:url('Index/index')}">首页</a></li>
+                                <li><a href="{:url('About/index')}">关于我们</a></li>
+                                <li><a href="{:url('Book/index')}">书籍</a></li>
+                                <li><a href="{:url('Notice/index')}">公告</a></li>
+                                <li><a href="{:url('Contact/index')}">联系我们</a></li>
+                            </ul>
+                            <!-- mega-menu End -->
+                        </nav>
+                        <!-- nav End -->
+                    </div>
+                    <!-- column End -->
+                    <div class="col-sm-2">
+                        <!-- <div class="romana_client_btn hidden-xs">
+                            <a href="#" class="hvr-bounce-to-right"><i class="icofont icofont-user-alt-3"></i>登录</a>
+                        </div> -->
+                        <div style="display: flex;padding: 20px 0;margin-top: 10px;align-items: center;justify-content: space-between;">
+                            {if condition="$username"}
+                            <p style="margin: 0;margin-top: 5px;">{$username}</p>
+                            <div class="btn-group">
+                                <button type="button" style="background-color: #288feb;" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                  个人中心 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                  <li><a href="{:url('Index/preson_edit')}">设置</a></li>
+                                  <li><a href="{:url('Borrow/order_list')}">订单管理</a></li>
+                                  <li role="separator" class="divider"></li>
+                                  <li><a href="{:url('Index/login_out')}">退出登录</a></li>
+                                </ul>
+                              </div>
+                            {else /}
+                            <p><a href="{:url('Index/login')}">登录</a></p>
+                            <p style="margin-left: 10px;">没有账号去<a href="{:url('Index/registration')}" style="margin-left: 5px;">注册</a></p>
+                            {/if}
+                        </div>
+                        
+                        <!-- <div class="romana_client_log_in">
+                            <form action="/index/login" class="romana_client_log_in_after">
+                                <input type="text" name="clientEmail" placeholder="请输入用户名">
+                                <input type="text" name="clientPass" placeholder="请输入密码">
+                                <input type="submit" value="登录">
+                                <p> or <a href="{:url('Index/registration')}">注册</a></p>
+                            </form>
+                        </div> -->
+                    </div>
+                    <!-- column End -->
+                </div>
+                <!-- row End -->
+            </div>
+            <!-- container End -->
+        </div>
+        <!-- Header Bottom End -->
+    </header>
+    <style>
+        .myweb_header{
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100000;
+        }
+    </style>
+    <!-- Header End -->

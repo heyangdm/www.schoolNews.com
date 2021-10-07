@@ -1,0 +1,144 @@
+{extend name="base/base"/}
+ 
+{block name="contents"}
+<style>
+.salseActive{
+    background-color: #fff;
+    color: #288feb;
+}
+</style>
+<div class="container book_body_contanier" id="book_body_contanierVue" style="padding-top: 100px;">
+    <div class="row ">
+        <div class="col-sm-4">
+            <div>
+                <img src="{$bookInfo.book_banner}" alt="">
+            </div>
+            <div class="book_item_content">
+                <div style="font-weight: bold;color: #333;">书名：{$bookInfo.book_name}</div>
+                <div style="font-size: 14px;">作者：{$bookInfo.author}</div>
+                <div style="font-size: 14px;color: #666;">分类：{$bookInfo.book_sale}</div>
+                <div style="font-size: 14px;color: #666;">入馆时间：{$bookInfo.create_time|date="Y-m-d H:i:s",###}</div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="register_box panel panel-warning">
+                <div class="panel-heading">请填写下单信息</div>
+                <div style="padding: 20px;">
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">联系人：</label>
+                        <div class="col-sm-9">
+                          <input type="text" class="form-control item_brrow_input" v-model="formData.order_connect_name" name="order_connect_name" 
+                          placeholder="请输入联系人姓名" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">手机号：</label>
+                        <div class="col-sm-9">
+                            <input type="tel" class="form-control item_brrow_input"
+                            onkeyup="this.value=this.value.replace(/[^\d]/g,'')"
+                            maxlength="11"
+                            v-model="formData.order_connect_phone" name="order_connect_phone" 
+                            placeholder="请输入联系人手机号" required>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">身份证号：</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control item_brrow_input" 
+                            onkeyup="this.value=this.value.replace(/[^\d]/g,'')"
+                            v-model="formData.order_connect_number" name="order_connect_number" 
+                            placeholder="请输入联系人身份证号" required>
+                        </div>
+                    </div>
+    
+                    <div class="form-group row">
+                      <label for="inputEmail3" class="col-sm-2 col-form-label">起始时间：</label>
+                      <div class="col-sm-9">
+                        <input type="date" class="form-control item_brrow_input" 
+                        v-model="formData.order_strat_time" name="order_strat_time" placeholder="" required>
+                      </div>
+                    </div>
+    
+                    <div class="form-group row">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">结束时间：</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control item_brrow_input" 
+                            v-model="formData.order_end_time" placeholder="" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8">
+                          <button 
+                          @click="getSale"
+                          style="background-color: #288feb;height: 5rem;margin-top: 30px;" 
+                          class="btn btn-success col-sm-12">提交订单</button>
+                        </div>
+                        <div class="col-sm-2"></div>
+                      </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="/web_asset/js/vue.js"></script>
+<script src="/web_asset/js/jquery-3.1.0.min.js"></script>
+<script>
+let vm = new Vue({
+    el:'#book_body_contanierVue',
+    data:{
+        formData:{
+            book_id:'{$bookInfo.bookid}',
+            order_user:'{$username}',
+            order_strat_time:'',
+            order_end_time:'',
+            order_connect_name:'',
+            order_connect_number:'',
+            order_connect_phone:'',
+        }
+    }, 
+    created(){
+    },
+    methods:{
+        getSale(){
+            if(!this.formData.order_connect_name||!this.formData.order_connect_number){
+                layer.msg('联系人信息不能为空！', {icon: 2});
+                return
+            }
+            if(!this.formData.order_strat_time||!this.formData.order_end_time){
+                layer.msg('请选择借阅时间', {icon: 2});
+                return
+            }
+            this.formData.order_strat_time = Date.parse(this.formData.order_strat_time) / 1000
+            this.formData.order_end_time = Date.parse(this.formData.order_end_time) / 1000
+
+            if(this.formData.order_strat_time>=this.formData.order_end_time){
+                layer.msg('借阅时间错误！', {icon: 2});
+                return
+            }
+
+            var data = {
+                data:this.formData
+            }
+            var that = this;
+            $.ajax({
+            url:"submit_order",
+            type:"post",
+            data:data,
+            success:function(res){
+                if(res.code == 200){
+                    layer.msg(res.msg, {icon: 1});
+                    location.reload();
+                } 
+            }
+            })
+        },
+
+    }
+})
+
+</script>
+{/block}

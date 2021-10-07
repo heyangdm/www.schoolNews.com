@@ -1,0 +1,128 @@
+{extend name="base/base"/}
+
+{block name="contents"}
+<style>
+    .salseActive {
+        background-color: #fff;
+        color: #288feb;
+    }
+
+    .salsenormol a {
+        color: #fff;
+    }
+
+    .left_nav_salse {
+        font-size: 16px;
+    }
+
+    .left_nav_salse ul li:hover a {
+        color: #288feb;
+    }
+    .special_style_lable{
+        padding: 6px 10px;
+    }
+    .order_item_info{
+        display: flex;
+        align-items: center;
+        margin: 10px 0;
+    }
+    .order_item_info p:first-child{
+        font-weight: bold;
+    }
+</style>
+<div class="container book_body_contanier" id="book_body_contanierVue" style="padding-top: 100px;">
+    <div class="row ">
+        <div class="col-sm-3">
+            <div class="left_nav_salse">
+                <h4>个人中心</h4>
+                <ul>
+                    <li class="salsenormol">
+                        <a href="{:url('Index/preson_edit')}">修改个人信息</a>
+                    </li>
+                    <li class="salseActive">
+                        <a href="{:url('Borrow/order_list')}">订单管理</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="panel panel-info">
+                <div class="panel-heading">订单详情</div>
+                <div class="panel-body">
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">订单号</p>
+                        <p style="margin-left: 10px;">{$result['order_id']}</p>
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">书名</p>
+                        <p style="margin-left: 10px;">{$result['book_name']}</p>
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">借阅账号名</p>
+                        <p style="margin-left: 10px;">{$result['order_user']}</p>
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">订单状态</p>
+                        {if condition="($result['order_status'] == 0 ) "}
+                        <P style="margin-left: 10px;">未借出</P>
+                        {/if}
+                        {if condition="($result['order_status'] == 1 ) "}
+                        <P style="margin-left: 10px;">已下单</P>
+                        {/if}
+                        {if condition="($result['order_status'] == 2 ) "}
+                        <P style="margin-left: 10px;">已发送</P>
+                        {/if}
+                        {if condition="($result['order_status'] == 3 ) "}
+                        <P style="margin-left: 10px;">已签收</P>
+                        {/if}
+                        {if condition="($result['order_status'] == 4 ) "}
+                        <P style="margin-left: 10px;">已归还</P>
+                        {/if}
+                        {if condition="($result['order_status'] == 5 ) "}
+                        <P style="margin-left: 10px;">已逾期</P>
+                        {/if}
+                        {if condition="($result['order_status'] == 6 ) "}
+                        <P style="margin-left: 10px;">已取消</P>
+                        {/if}
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">订单联系人</p>
+                        <p style="margin-left: 10px;">{$result['order_connect_name']}</p>
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">身份证号</p>
+                        <p style="margin-left: 10px;">{$result['order_connect_number']}</p>
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">联系电话</p>
+                        <p style="margin-left: 10px;">{$result['order_connect_phone']}</p>
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">开始时间</p>
+                        <p style="margin-left: 10px;">{$result['order_strat_time']}</p>
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">结束时间</p>
+                        <p style="margin-left: 10px;">{$result['order_end_time']}</p>
+                    </div>
+
+                    <div class="order_item_info">
+                        <p style="width: 20%;text-align: left;">加入时间</p>
+                        <p style="margin-left: 10px;">{$result['create_time']}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

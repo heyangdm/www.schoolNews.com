@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="/assets/css/view.css"/>
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+    <style>
+        .login-form{
+            width: 420px;
+            margin-top: 10%;
+        }
+    </style>
+</head>
+<body class="login-wrap">
+    <div class="layui-content">
+        <form class="login-form layui-form layui-card-body">
+        <h3 style="text-align: center;margin-bottom: 20px;">登录</h3>
+        <div class="input-group">
+            <label for="username">
+                <span class="label-title">用户名</span>
+            </label>
+            <input type="text" id="username" name="username" class="input-field" style="border-bottom: 1px solid #eee;">
+        </div>
+        <div class="input-group">
+            <label for="username">
+                <span class="label-title">选择身份</span>
+            </label>
+            <div class="layui-input-block" style="margin-left: 0;margin-top: 15px;; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                <input type="radio" name="identity" value="0" title="超级管理员" checked>
+                <input type="radio" name="identity" value="1" title="管理员" >
+                <input type="radio" name="identity" value="2" title="教师" >
+            </div>
+        </div>
+        <div class="input-group">
+            <label for="password">
+                <span class="label-title">密码</span>
+            </label>
+            <input type="password" id="password" name="password" class="input-field" style="border-bottom: 1px solid #eee;">
+        </div>
+        <div class="input-group">
+                <button class=" login-button" lay-submit lay-filter="formDemo">立即登录<i class="ai ai-enter"></i></button>
+        </div>
+        </form>
+    </div>
+    <script src="/assets/layui.js"></script>
+    <script src="/assets/layui.all.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/layuiMethods.js"></script>
+    <script src="/js/common.js"></script>
+    
+    <script>
+      layui.use(['form','upload'], function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+          let options =data.field
+            let url = "/admin/index/login";
+            ajaxPost(url,options,function(res){
+                if(res.code == 200){
+                    layer.msg(res.msg, {
+                        icon: 1,
+                        time: 2000
+                    },function(){
+                        window.location = "/admin/Index/main"
+                    });  
+                    // 
+                }else{
+                    layer.alert(res.msg)
+                }
+            });
+            return false;
+        });
+      });
+        
+    </script>
+</body>
+</html>

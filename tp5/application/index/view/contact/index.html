@@ -1,0 +1,145 @@
+
+
+{include file="header/header" /}
+<!-- ==========================================================
+2.*Hero_area start
+============================================================ -->
+    <div class="romana_allPage_area" style="margin-top: 140px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="romana_allPage_text text-center">
+                        <h1>contact us</h1>
+                        <ol class="breadcrumb hvr-shutter-out-horizontal">
+                            <li><a href="index.html">Home</a><span></span></li>
+                            <li><a href="#">contact</a></li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- column End -->
+            </div>
+            <!-- row End -->
+        </div>
+        <!-- container End -->
+    </div>
+<!-- ==========================================================
+3.*romana_awesome_service_area start
+============================================================ -->
+    <div class="romana_gmap_area romana_registration_form_area">
+        <div class="romana_google_map">
+            <div id="googleMap"></div>
+        </div>
+        <div class="container">
+            <div class="row ">
+                <!-- column End -->
+                <div class="col-sm-12">
+                    <div class="romana_registration_btn text-center">
+                        
+                    </div>
+                    <div class="romana_registration_form" style="padding-top: 50px;">
+                        <form name="feekform">
+                            <div class="row">
+                                <div style="font-weight: bold; text-align: center;width: 100%;margin-bottom: 20px;">联系我们</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="field">
+                                        <label class="placeholder" for="FistName">
+                                            姓名
+                                            <span class="red">*</span>
+                                        </label>
+                                        <input id="FistName" type="text" name="feek_name" />
+                                    </div>
+                                    <div class="field">
+                                        <label class="placeholder" for="userEmail">
+                                            邮箱
+                                            <span class="red">*</span>
+                                        </label>
+                                        <input id="userEmail" type="text" name="feek_email" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="field">
+                                        <label class="placeholder" for="LastName">
+                                            联系地址
+                                            <span class="red">*</span>
+                                        </label>
+                                        <input id="LastName" type="text" name="feek_adress" />
+                                    </div>
+                                    <div class="field">
+                                        <label class="placeholder" for="userPhone">
+                                            联系电话
+                                            <span class="red">*</span>
+                                        </label>
+                                        <input id="userPhone" type="text" name="feek_phone" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="field text-field">
+                                        <label class="placeholder">
+                                            提交反馈
+                                        </label>
+                                        <textarea cols="30" rows="10" name="school_msg_content"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="romana_submit_btn">
+                                <input type="button" value="提交反馈" onclick="submit_login()">
+                            </div>
+                        </form>
+                    </div>
+                    <!-- romana_registration form End -->
+                    <div class="romana_contact_info">
+                        <p><b>phone:</b> <span>+{$school_info['school_tel']} <br>+{$school_info['school_phone']}</span></p>
+                        <address>
+                        <b>address:</b>
+                        <span>{$school_info['adress']}</span>
+                    </address>
+                    </div>
+                </div>
+                <!-- column End -->
+            </div>
+            <!-- row End -->
+        </div>
+        <!-- container End -->
+    </div>
+    {include file="footer/footer" /}
+    <script>
+        // 
+        $("form").submit(function (event) {
+            event.preventDefault();
+        })
+    
+        function submit_login(event) {
+            var data = {
+                feek_name: feekform.feek_name.value,
+                feek_email: feekform.feek_email.value,
+                feek_adress: feekform.feek_adress.value,
+                feek_phone:feekform.feek_phone.value,
+                school_msg_content: feekform.school_msg_content.value
+            }
+            $.ajax({
+                url: "/Index/contact/submit_conectMsg",
+                type: "post",
+                data: data,
+                success: function (res) {
+                    console.log(res);
+                    if (res.code == 200) {
+                        layer.msg(res.msg, {
+                            icon: 1
+                        });
+                        setTimeout(function () {
+                            window.location.href = "{:url('Contact/index')}"
+                        }, 2000)
+                    } else {
+                        layer.msg(res.msg, {
+                            icon: 5
+                        });
+                    }
+                }
+            })
+        }
+    </script>
+

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/view.css"/>
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+    <style>
+    </style>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">首页</a>
+                  <a><cite>公告列表</cite></a>
+                </span>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <div class="form-box">
+                        <table class="layui-hide" id="test" lay-filter="test"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/layui.all.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/layuiMethods.js"></script>
+
+    <script type="text/html" id="barDemo">
+        {{#  if(d.isHandle == 0){ }}
+            <a class="layui-btn layui-btn-xs" lay-event="handle">处理</a>
+        {{#  } }} 
+        {{#  if(d.isHandle == 1){ }}
+            <button disabled class="layui-btn layui-btn-xs layui-btn-warm">已处理</button>
+        {{#  } }} 
+        
+    </script>
+<script>
+  layui.use('table', function(){
+  var table = layui.table;
+  
+  table.render({
+    elem: '#test'
+    // ,url:'/test/table/demo1.json'
+    ,data:{$result}
+    ,defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
+      title: '提示'
+      ,layEvent: 'LAYTABLE_TIPS'
+      ,icon: 'layui-icon-tips'
+    }]
+    ,title: '用户数据表'
+    ,cols: [[
+      {type: 'checkbox', fixed: 'left'}
+      ,{field:'id', title:'ID', width:80, fixed: 'left', unresize: true, sort: true}
+      ,{field:'feek_name', title:'反馈人名', width:120}
+      ,{field:'feek_email', title:'反馈人邮箱', width:120}
+      ,{field:'feek_phone', title:'反馈人电话', width:120}
+      ,{field:'feek_adress', title:'反馈人地址'}
+      ,{field:'school_msg_content', title:'公告内容'}
+      ,{field:'create_time', title:'发布时间', width:120,sort:true}
+      ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+    ]]
+    ,page: true
+  });
+  
+  //监听行工具事件
+  table.on('tool(test)', function(obj){
+    var data = obj.data;
+    //console.log(obj)
+    if(obj.event === 'handle'){
+        var id = data.id;
+        var options = {id:id}
+        $.ajax({
+            url:"/admin/Schoolfeekmsg/handle_msg",
+            data:options,
+            type:"post",
+            headers : {'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8'}, 
+            success:function(res){
+              if(res.code == 200){
+                layer.alert(res.msg)
+                location.reload();
+              }else{
+                layer.alert(res.msg)
+              }
+            }
+        })
+
+    }
+  });
+});
+    </script>
+</body>
+</html>

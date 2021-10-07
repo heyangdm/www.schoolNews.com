@@ -1,0 +1,102 @@
+{extend name="base/base"/}
+ 
+{block name="contents"}
+<!-- ==========================================================
+2.*Hero_area start
+============================================================ -->
+<div class="romana_allPage_area">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="romana_allPage_text text-center">
+                    <h1>公告</h1>
+                    <ol class="breadcrumb hvr-shutter-out-horizontal">
+                        <li><a href="{:url('Index/index')}">首页</a><span></span></li>
+                        <li><a href="#">公告</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- column End -->
+        </div>
+        <!-- row End -->
+    </div>
+    <!-- container End -->
+</div>
+<!-- ==========================================================
+3.*romana_awesome_service_area start
+============================================================ -->
+<div class="romana_blog_page_area romana_section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <aside>
+                    <div class="widget romana_related_post">
+                        <h3 class="textone">最新消息</h3>
+                        {volist name="msg_list" id="data"}
+                        <div class="romana_post_img_text">
+                            <div class="romana_post_text" style="padding: 0;">
+                                <a href="single-blog.html">
+                                    <h3>{$data.msg_title}</h3>
+                                    <span>{$data.create_time|date="Y-m-d H:i:s",###}</span>
+                                </a> 
+                            </div>
+                        </div>
+                        {/volist}
+                    </div>
+                </aside>
+            </div>
+            <!-- column End -->
+            <div class="col-sm-8" style="border-left:1px solid #ddd;">
+                <div class="romana_all_blog_content">
+                    {volist name="new_list" id="data"}
+                    <div class="romana_blog_content">
+                        <div class="romana_blog_img">
+                            <a href="{:url('Notice/detail')}?id={$data.id}"><img src="{$data.banner}" alt=""></a>
+                        </div>
+                        <div class="romana_blog_date">
+                            <p>{$data.create_date|date="Y-m-d H:i:s",###}</p>
+                        </div>
+                        <div class="text-left" style="margin-top: 10px;">
+                            <a href="{:url('Notice/detail')}?id={$data.id}">{$data.notice_title}</a>
+                        </div>
+                    </div>
+                    {/volist}
+                    <div class="romana_blog_pagination text-center">
+                        <ul>
+                            <li><a href="#"><i class="icofont icofont-long-arrow-left"></i></a></li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#"><i class="icofont icofont-long-arrow-right"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- column End -->
+        </div>
+        <!-- row End -->
+    </div>
+    <!-- container End -->
+</div>
+<style>
+    .textoneHide {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 25px;    
+    max-height: 25px;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.textTowHide {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-height: 23px;
+    max-height: 46px;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+</style>
+{/block}

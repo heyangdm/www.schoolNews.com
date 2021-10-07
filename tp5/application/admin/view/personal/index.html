@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/view.css"/>
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">个人中心</a>
+                  <a><cite>个人修改</cite></a>
+                </span>
+            </div>
+        </div>
+        <div class="layui-row">
+          <div class="layui-card">
+            <div class="layui-card-body">
+              <form class="layui-form">
+                <input type="hidden" name="uid" value="{$result['uid']}">
+                <div class="layui-form-item layui-col-xs6">
+                  <label class="layui-form-label">账号</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="username" required lay-verify="required" placeholder="请输入账号" 
+                    value="{$result['username']}"
+                    autocomplete="off" class="layui-input">
+                  </div>
+                  <div class="layui-form-mid layui-word-aux">请输入电话或者邮箱</div>
+                </div>
+                <div class="layui-form-item layui-col-xs6">
+                  <label class="layui-form-label">密码框1</label>
+                  <div class="layui-input-inline">
+                    <input type="password" name="password1" required lay-verify="required" placeholder="请输入密码" 
+                    value="{$result['password1']}"
+                    autocomplete="off" class="layui-input">
+                  </div>
+                  <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                </div>
+                <div class="layui-form-item layui-col-xs6">
+                  <label class="layui-form-label">密码框2</label>
+                  <div class="layui-input-inline">
+                    <input type="password" name="password2" required lay-verify="required" placeholder="请输入密码" 
+                    value="{$result['password2']}"
+                    autocomplete="off" class="layui-input">
+                  </div>
+                  <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                </div>
+                <div class="layui-form-item layui-col-xs6">
+                  <label class="layui-form-label">邮箱</label>
+                  <div class="layui-input-inline">
+                    <input type="email" name="email"
+                    value="{$result['email']}"
+                    placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                  </div>
+                  <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                </div>
+
+                <div class="layui-form-item layui-col-xs6">
+                  <label class="layui-form-label">城市</label>
+                  <div class="layui-input-inline">
+                    <input type="text" name="city" placeholder="请输入所在城市" autocomplete="off"
+                    value="{$result['city']}"
+                    class="layui-input">
+                  </div>
+                  <!-- <div class="layui-form-mid layui-word-aux">辅助文字</div> -->
+                </div>
+
+                <div class="layui-form-item layui-col-xs6">
+                  <label class="layui-form-label">性别</label>
+                  <div class="layui-input-block">
+                    <input type="radio" name="sex" value="男" title="男" {$result['sex'] == '男'? 'checked' : ''}>
+                    <input type="radio" name="sex" value="女" title="女" {$result['sex'] == '女'? 'checked' : ''} >
+                  </div>
+                </div>
+                <div class="layui-form-item layui-col-xs6">
+                    <label class="layui-form-label">头像</label>
+                    <div class="layui-input-block">
+                      <div class="layui-upload">
+                          <input type="hidden" name="user_photo" id="banner" value="">
+                          <button type="button" class="layui-btn" id="test1">上传图片</button>
+                          <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="demo1" style="width: 95px;" src="{$result['user_photo']}">
+                            <p id="demoText"></p>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                <div class="layui-form-item layui-form-text layui-col-xs6">
+                  <label class="layui-form-label">签名</label>
+                  <div class="layui-input-block">
+                    <textarea name="sign" value="" placeholder="请输入内容" class="layui-textarea">{$result['sign']}</textarea>
+                  </div>
+                </div>
+                <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <!-- <button type="reset" class="layui-btn layui-btn-primary">重置</button> -->
+                  </div>
+                </div>
+              </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <script src="/assets/layui.all.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/layuiMethods.js"></script>
+    <script>
+        layui.use(['form','upload'], function(){
+        var form = layui.form;
+        var upload = layui.upload
+
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/admin/Personal/upload' //上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+                layer.msg('上传中', {icon: 16, time: 0});
+            }
+            ,done: function(res){
+            console.log(res)
+                $("#banner").val(res.data.src);
+                if(res.code==0){
+                    return layer.msg('图片上传成功');
+                }else{
+                    return layer.msg('图片上传失败，请刷新后重试');
+                }
+            }
+            ,error: function(){
+            //请求异常回调
+            }
+        });
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+          let options =data.field
+          $.ajax({
+            url:"/admin/User/edit_user",
+            data:options,
+            type:"post",
+            headers : {'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8'}, 
+            success:function(res){
+              if(res.code == 200){
+                layer.alert(res.msg)
+                location.reload();
+              }else{
+                layer.alert(res.msg)
+              }
+            }
+          })
+          return false;
+        });
+      });
+    </script>
+</body>
+</html>

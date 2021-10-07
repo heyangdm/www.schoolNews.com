@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/view.css"/>
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">书籍列表</a>
+                  <a><cite>添加书籍</cite></a>
+                </span>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                  <form class="layui-form">
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">书籍名称</label>
+                      <div class="layui-input-block">
+                        <input type="text" name="book_name" required lay-verify="required" placeholder="请输入书籍名称" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">书籍作者</label>
+                      <div class="layui-input-block">
+                        <input type="text" name="author" required lay-verify="required" placeholder="请输入书籍作者" autocomplete="off" class="layui-input" value="">
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-xs6">
+                        <label class="layui-form-label">书籍分类</label>
+                        <div class="layui-input-inline">
+                          <select name="book_sale" lay-filter="shenfen">
+                            {volist name="sale_list" id="vo"}
+                            <option value="{$vo.id}">{$vo.salse_name}</option>
+                            {/volist}
+                          </select>
+                        </div>
+                      </div>
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">书籍封面</label>
+                      <div class="layui-input-block">
+                        <div class="layui-upload">
+                            <input type="hidden" name="book_banner" id="banner" value="">
+                            <button type="button" class="layui-btn" id="test1">上传图片</button>
+                            <div class="layui-upload-list">
+                              <img class="layui-upload-img" id="demo1" style="width: 95px;">
+                              <p id="demoText"></p>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="layui-form-item layui-form-text layui-col-xs6">
+                      <label class="layui-form-label">书籍简介</label></label>
+                      <div class="layui-input-block">
+                        <textarea id="lay_edit" class="layui-textarea" lay-verify="content" name="book_desc" th:text="${model.text}"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="layui-form-item layui-form-text layui-col-xs6">
+                        <label class="layui-form-label">推荐寄语</label>
+                        <div class="layui-input-block">
+                            <textarea name="book_recomd" placeholder="请输入推荐寄语" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item" style="margin-top: 20px;">
+                      <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/layui.all.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/layuiMethods.js"></script>
+    <script>
+
+      layui.use(['layedit', 'form','upload','layer'], function(){
+        var layedit = layui.layedit;
+        var form = layui.form;
+        var upload = layui.upload
+
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/admin/News/upload' //上传接口
+            ,before: function(obj){
+                //预读本地文件示例，不支持ie8
+                obj.preview(function(index, file, result){
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+                layer.msg('上传中', {icon: 16, time: 0});
+            }
+            ,done: function(res){
+              console.log(res)
+                $("#banner").val(res.data.src);
+                if(res.code==0){
+                    return layer.msg('图片上传成功');
+                }else{
+                    return layer.msg('图片上传失败，请刷新后重试');
+                }
+            }
+            ,error: function(){
+            //请求异常回调
+            }
+        });
+        layedit.set({
+              uploadImage: {
+                  url: '/admin/Book/upload',
+                  type: 'post'
+              }
+          });
+          var index = layedit.build('lay_edit',{
+              height: 400
+          });
+
+        form.verify({
+            //content富文本域中的lay-verify值
+            content: function(value) {
+                return layedit.sync(index);
+            }
+        });
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+          let options =data.field;
+          $.ajax({
+            url:"/admin/Book/add_book",
+            data:options,
+            type:"post",
+            headers : {'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8'}, 
+            success:function(res){
+              if(res.code == 200){
+                ajaxSucess(res.msg)
+                setTimeout(()=>{
+                    window.location.href="javascript:history.go(-1)";
+                },2000)
+              }else{
+                ajaxFail(res.msg)
+              }
+            }
+          })
+          return false;
+        });
+      });
+        
+    </script>
+</body>
+</html>

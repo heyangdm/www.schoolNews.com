@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/view.css"/>
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+</head>
+<body class="layui-view-body">
+    <div class="layui-content">
+        <div class="layui-page-header">
+            <div class="pagewrap">
+                <span class="layui-breadcrumb">
+                  <a href="">协议列表</a>
+                  <a><cite>添加协议</cite></a>
+                </span>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                  <form class="layui-form">
+                      <input type="hidden" name="id" value="{$result['id']}">
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">协议标题</label>
+                      <div class="layui-input-block">
+                        <input type="text" name="title" required lay-verify="required"
+                        value="{$result['title']}"
+                         placeholder="请输入协议标题" autocomplete="off" class="layui-input">
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-col-xs6">
+                      <label class="layui-form-label">协议归属</label>
+                      <div class="layui-input-block">
+                        <input type="text" name="author" required lay-verify="required"
+                         placeholder="请输入协议作者" autocomplete="off" class="layui-input"
+                         value="{$result['author']}">
+                      </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text layui-col-xs10">
+                      <label class="layui-form-label">协议内容</label></label>
+                      <div class="layui-input-block">
+                        <textarea id="lay_edit" class="layui-textarea" lay-verify="content" name="content" th:text="${model.text}">
+                            {$result['content']}
+                        </textarea>
+                      </div>
+                    </div>
+                    <div class="layui-form-item">
+                      <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/assets/layui.all.js"></script>
+    <script src="/js/jquery-2.1.0.min.js"></script>
+    <script src="/js/layuiMethods.js"></script>
+    <script>
+
+      layui.use(['layedit', 'form','upload','layer'], function(){
+        var layedit = layui.layedit;
+        var form = layui.form;
+          var index = layedit.build('lay_edit',{
+              height: 700,
+              tool: [
+              'strong' //加粗
+              ,'italic' //斜体
+              ,'underline' //下划线
+              ,'del' //删除线
+              ,'|' //分割线
+              ,'left' //左对齐
+              ,'center' //居中对齐
+              ,'right' //右对齐
+              ,'link' //超链接
+              ,'unlink' //清除链接
+              ,'face' //表情
+              ,'help' //帮助
+            ]
+          });
+
+        form.verify({
+            //content富文本域中的lay-verify值
+            content: function(value) {
+                return layedit.sync(index);
+            }
+        });
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+          let options =data.field;
+          $.ajax({
+            url:"/admin/Agreement/edit_agreement",
+            data:options,
+            type:"post",
+            headers : {'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8'}, 
+            success:function(res){
+              if(res.code == 200){
+                layer.alert(res.msg,{
+                    success:function(){
+                        setTimeout(()=>{
+                            window.location.href="javascript:history.go(-1)";
+                        },2000)
+                    }
+                });
+              }else{
+                ajaxFail(res.msg)
+              }
+            }
+          })
+          return false;
+        });
+      });
+        
+    </script>
+</body>
+</html>

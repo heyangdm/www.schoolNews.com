@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/assets/css/layui.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="/assets/css/view.css"/>
+    <link rel="icon" href="/favicon.ico">
+    <title>管理后台</title>
+    <style>
+        .login-form{
+            width: 420px;
+        }
+    </style>
+</head>
+<body class="login-wrap">
+    <div class="login-container">
+        <form class="login-form layui-form layui-card-body" action="/admin/index/register_sub" method="POST">
+            <div class="input-group">
+                <label for="username">
+                    <span class="label-title">用户名</span>
+                </label>
+                <input type="text" id="username" name="username" class="input-field" style="border-bottom: 1px solid #eee;" required>
+            </div>
+            <div class="input-group">
+                <!-- <label class="layui-form-label">选择身份</label> -->
+                <label for="username">
+                    <span class="label-title">选择身份</span>
+                </label>
+                <div class="layui-input-block" style="margin-left: 0;margin-top: 15px;; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                  <input type="radio" name="identity" value="0" title="学生" checked>
+                  <input type="radio" name="identity" value="1" title="教师" >
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="password">
+                    <span class="label-title">密码</span>
+                </label>
+                <input type="password" id="password" name="password1" class="input-field" style="border-bottom: 1px solid #eee;" required>
+            </div>
+            <div class="input-group">
+                <label for="password">
+                    <span class="label-title">再次输入密码</span>
+                </label>
+                <input type="password" id="password" name="password2" class="input-field" style="border-bottom: 1px solid #eee;" required>
+            </div>
+            <button type="submit" class="login-button">注册<i class="ai ai-enter"></i></button>
+        </form>
+    </div>
+</body>
+<script src="/assets/layui.js"></script>
+<script src="/assets/layui.all.js"></script>
+<script>
+  var form = layui.form
+    ,layer = layui.layer;
+</script>
+<!-- <script src="/js/index.js" data-main="login"></script> -->
+</html>

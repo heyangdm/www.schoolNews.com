@@ -1,0 +1,112 @@
+{extend name="base/base"/}
+ 
+{block name="contents"}
+<style>
+.salseActive{
+    background-color: #fff;
+    color: #288feb;
+}
+a.borrow_btn{
+    background-color: #288feb;
+    padding: 10px 20px;
+    color: #fff;
+    border-radius: 6px;
+}
+</style>
+<div class="container book_body_contanier" style="padding-top: 100px;">
+    <div class="row ">
+        <div class="col-sm-3" id="book_body_contanierVue">
+            <div class="left_nav_salse">
+                <h4>书籍分类</h4>
+                <ul>
+                    <li v-for="(item,index) in saleList" :class="curentIndex == index?'salseActive':''"
+                     :key="item.id" @click="changeSalse(item.id,index)">{{item.salse_name}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div class="row">
+                <div class="col-sm-6 book_item_container">
+                    <div>
+                        <img src="{$bookInfo.book_banner}" alt="" style="height: 160px;">
+                    </div>
+                    <div class="book_item_content">
+                        <div style="font-weight: bold;color: #333;">{$bookInfo.book_name}</div>
+                        <div style="font-size: 14px;">{$bookInfo.author}</div>
+                        <div style="font-size: 12px;color: #666;">{$bookInfo.book_sale}</div>
+                        <div style="font-size: 12px;color: #666;">入馆时间：</div>
+                        <div style="font-size: 12px;color: #666;">{$bookInfo.create_time|date="Y-m-d H:i:s",###}</div>
+                    </div>
+                </div>
+            </div>
+            <h4 style="margin: 20px 0;">书籍简介：</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    {$bookInfo.book_desc}
+                </div>
+            </div>
+            <h4 style="margin: 20px 0;">推荐寄语：</h4>
+            <div class="row">
+                <div class="col-sm-12">
+                    {$bookInfo.book_recomd}
+                </div>
+            </div>
+            <div class="row" style="margin-top: 50px;">
+                <div class="col-sm-12">
+                    <a href="{:url('Borrow/index')}?bookid={$bookInfo.bookid}" class="borrow_btn" href="">去借阅</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/web_asset/js/vue.js"></script>
+<script src="/web_asset/js/jquery-3.1.0.min.js"></script>
+<script>
+let vm = new Vue({
+    el:'#book_body_contanierVue',
+    data:{
+        salseId:0,
+        saleList:[],
+        curentIndex:0
+    },
+    created(){
+        this.getSale()
+    },
+    methods:{
+        getSale(){
+            var data = {}
+            var that = this;
+            $.ajax({
+            url:"query_book_salse",
+            type:"post",
+            data:data,
+            success:function(res){
+                if(res.code == 200){
+                    let initdata = {
+                        id:0,
+                        salse_name:"全部"
+                    } 
+                    var list = res.data.unshift(initdata)
+                    that.saleList = res.data
+                    that.defautMenu()
+                }
+            }
+            })
+        },
+        changeSalse(id,index){
+            this.salseId = id
+            this.curentIndex = index
+            window.location.href = "{:url('Book/index')}"
+        },
+        defautMenu(){
+            for(let i = 0;i<this.saleList.length;i++){
+                if(this.saleList[i].salse_name == '{$bookInfo.book_sale}'){
+                    this.curentIndex = i
+                }
+            }
+        }
+    }
+})
+
+</script>
+{/block}
