@@ -1,4 +1,5 @@
 ## www.schoolNews.com
+`注意请将thinkphp5.0中的thinkphp文件拷贝到项目根目录，方可正常运行`
 ### 1.项目描述
 - 这是一个实现学校图书管理的DEMO系统，后端技术栈apache2.4.39 + mysql5.7.26+php7,前端技术栈 layui + vue2.0 + bootstrap3 + jquery
 ### 2.项目基本结构
@@ -31,10 +32,3 @@
 
 ### 3.项目部分展示
 
-![](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20211007181445497.png)
-
-![image-20211007181538508](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20211007181538508.png)
-
-![image-20211007181552875](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20211007181552875.png)
-
-![image-20211007181617534](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20211007181617534.png)
